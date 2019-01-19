@@ -1,0 +1,1 @@
+Applying concurrency to genetic algorithm solution for Travelling Salesman Problem. Based on solution from The Project Spot http://www.theprojectspot.com/tutorial-post/applying-a-genetic-algorithm-to-the-travelling-salesman-problem/5
