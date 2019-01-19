@@ -3,8 +3,6 @@
 package pl.tsp;
 
 import java.util.concurrent.*;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Population {
 
@@ -38,29 +36,20 @@ public class Population {
     // Gets the best tour in the population - CHYBA TO TRZEBA ZROWNOLEGLIC
     public Tour getFittest() {
         Tour fittest = tours[0];
+        Future<Tour> future;
         // Loop through individuals to find fittest
-        synchronized (fittest) {
-        	final ExecutorService executor = Executors.newFixedThreadPool(1);
-        	final List<Future<?>> futures = new ArrayList<>();
-        	for (int i = 1; i < populationSize(); i++) {
-        		final Integer innerI = new Integer(i);
-        		Future<?> future = executor.submit(new Runnable() {
-        		    public void run() {
-        		    	if (fittest.getFitness() <= getTour(innerI).getFitness()) {
-        		            setFitness(innerI, fittest);
-        				}
-        		    }
-        		});
-        		futures.add(future);
-        	}
-        	try {
-        		for (Future<?> future : futures) {
-        			future.get();
-        		}
-        	}catch (InterruptedException | ExecutionException e) {
-        		e.printStackTrace();
-        	}
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        for (int i = 1; i < populationSize(); i++) {
+        	final Integer innerI = new Integer(i);
+        	 future = executor.submit(new Fittest(fittest, innerI, tours));
+        	 try {
+             	fittest = future.get();
+             }
+             catch (InterruptedException | ExecutionException e) {
+             	e.printStackTrace();
+             }
         }
+        executor.shutdown();
         return fittest;
     }
 
@@ -69,12 +58,7 @@ public class Population {
         return tours.length;
     }
     
-    public Tour setFitness (int i, Tour fittest) {
-			fittest = getTour(i);
-			return fittest;
-    }
-    
-     /*//Gets the best tour in the population 
+    /*//Gets the best tour in the population 
     public Tour getFittest() {
         Tour fittest = tours[0];
         // Loop through individuals to find fittest
