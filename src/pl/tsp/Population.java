@@ -33,21 +33,16 @@ public class Population {
         return tours[index];
     }
 
-    // Gets the best tour in the population - CHYBA TO TRZEBA ZROWNOLEGLIC
     public Tour getFittest() {
         Tour fittest = tours[0];
         Future<Tour> future;
-        // Loop through individuals to find fittest
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        for (int i = 1; i < populationSize(); i++) {
-        	final Integer innerI = new Integer(i);
-        	 future = executor.submit(new Fittest(fittest, innerI, tours));
-        	 try {
-             	fittest = future.get();
-             }
-             catch (InterruptedException | ExecutionException e) {
-             	e.printStackTrace();
-             }
+        ExecutorService executor = Executors.newFixedThreadPool(100);
+        future = executor.submit(new Fittest(fittest, tours));
+        try {
+        	fittest = future.get();
+        }
+        catch (InterruptedException | ExecutionException e) {
+        	e.printStackTrace();
         }
         executor.shutdown();
         return fittest;

@@ -75,7 +75,7 @@ public class TSP {
 
         // Evolve population for 100 generations
         pop = GA.evolvePopulation(pop);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             pop = GA.evolvePopulation(pop);
         }
 

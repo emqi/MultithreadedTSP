@@ -8,9 +8,8 @@ public class Fittest implements Callable<Tour> {
 	int i;
 	Tour[] tours;
 	
-	public Fittest(Tour fittest, int i, Tour[] tours) {
+	public Fittest(Tour fittest, Tour[] tours) {
 		this.fittest=fittest;
-		this.i=i;
 		this.tours=tours;
 	}
 	
@@ -18,9 +17,15 @@ public class Fittest implements Callable<Tour> {
         return tours[index];
     }
 	
+	public int populationSize() {
+        return tours.length;
+    }
+	
 	public Tour call() {
-		if (fittest.getFitness() <= getTour(i).getFitness()) {
-			fittest = getTour(i);
+		for (int i = 1; i < populationSize(); i++) {
+			if (fittest.getFitness() <= getTour(i).getFitness()) {
+				fittest = getTour(i);
+			}
 		}
 		return fittest;
 	}
