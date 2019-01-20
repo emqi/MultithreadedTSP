@@ -2,9 +2,22 @@
 
 package pl.tsp;
 
+import java.util.Scanner;
+import java.net.*;
+import java.io.*;
+
 public class TSP {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
+    	System.out.println("What's your role?");
+    	System.out.println("Choose 1 to become a server: ");
+    	System.out.println("Choose 2 to become a client: ");
+    	Scanner scanner = new Scanner(System.in);
+    	int choice = scanner.nextInt();
+    	if(choice == 1)
+    		System.out.println("You've become a server");
+    	else if(choice == 2)
+    		System.out.println("You've become a client");
 
     	final long startTime = System.nanoTime();
         // Create and add our cities
@@ -75,7 +88,7 @@ public class TSP {
 
         // Evolve population for 100 generations
         pop = GA.evolvePopulation(pop);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 500; i++) {
             pop = GA.evolvePopulation(pop);
         }
 
