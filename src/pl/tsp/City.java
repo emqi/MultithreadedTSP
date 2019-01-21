@@ -2,7 +2,9 @@
 
 package pl.tsp;
 
-public class City {
+import java.io.Serializable;
+
+public class City implements Serializable{
     int x;
     int y;
     

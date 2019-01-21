@@ -3,11 +3,12 @@
 package pl.tsp;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Scanner;
 import java.net.*;
 import java.io.*;
 
-public class TSP {
+public class TSP implements Serializable{
 
     public static void main(String[] args){
     	int port = 3333;
@@ -201,17 +202,14 @@ public class TSP {
         TourManager.addCity(city29);
         City city30 = new City(200, -39);
         TourManager.addCity(city30);
-
         // Initialize population
         Population pop = new Population(50, true);
         System.out.println("Initial distance: " + pop.getFittest().getDistance());
-
         // Evolve population for 100 generations
         pop = GA.evolvePopulation(pop);
         for (int i = 0; i < 500; i++) {
             pop = GA.evolvePopulation(pop);
         }
-
         // Print final results
         final long duration = System.nanoTime() - startTime;
         System.out.println("Finished in " + duration*0.000000001 + " second(s).");

@@ -3,8 +3,9 @@
 package pl.tsp;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class TourManager {
+public class TourManager implements Serializable {
 
     // Holds our cities
     public static ArrayList destinationCities = new ArrayList<City>();

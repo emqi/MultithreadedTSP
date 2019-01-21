@@ -2,7 +2,9 @@
 
 package pl.tsp;
 
-public class GA {
+import java.io.Serializable;
+
+public class GA implements Serializable{
 
     /* GA parameters */
     private static final double mutationRate = 0.015;

@@ -1,8 +1,9 @@
 package pl.tsp;
 
 import java.util.concurrent.*;
+import java.io.Serializable;
 
-public class Fittest implements Callable<Tour> {
+public class Fittest implements Callable<Tour>, Serializable {
 	
 	Tour fittest;
 	int i;
