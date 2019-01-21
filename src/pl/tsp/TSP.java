@@ -9,19 +9,18 @@ import java.io.*;
 public class TSP {
 
     public static void main(String[] args){
-    	InetAddress addr = InetAddress.getByName("192.168.0.59");
     	int port = 3333;
     	System.out.println("What's your role?");
     	System.out.println("Choose 1 to become a server: ");
     	System.out.println("Choose 2 to become a client: ");
     	Scanner scanner = new Scanner(System.in);
     	int choice = scanner.nextInt();
+    	scanner.close();
     	if(choice == 1) {
     		System.out.println("You've become a server");
     		try {
     	        ServerSocket welcomeSocket = new ServerSocket(port);
-    	        boolean condition = true;
-    	        while (condition == true) {    
+    	        while (true) {    
     	            // Create the Client Socket
     	            Socket clientSocket = welcomeSocket.accept();
     	            System.out.println("Socket Established...");
@@ -29,14 +28,19 @@ public class TSP {
     	            ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
     	            ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 
-    	            // Read modify
-    	            // TODO here
-
-    	            /* Create Message object and retrive information */
     	            while(TourManager.numberOfCities() <= 30) { 
-    	            	
+    	            	TourManager.addCity((City)inFromClient.readObject());
     	            }
-    	            condition = false;
+    	            
+    	            // Initialize population
+    	            Population pop = new Population(50, true);
+    	            System.out.println("Initial distance: " + pop.getFittest().getDistance());
+    	            
+    	            // Evolve population for 100 generations
+    	            pop = GA.evolvePopulation(pop);
+    	            for (int i = 0; i < 500; i++) {
+    	                pop = GA.evolvePopulation(pop);
+    	            }
     	        }
 
     	    } catch (Exception e) {
@@ -50,35 +54,78 @@ public class TSP {
     		System.out.println("You've become a client");
     		try {
     	        // Create the socket
-    	        Socket clientSocket = new Socket(addr, port);
+    	        Socket clientSocket = new Socket("192.168.0.59", port);
     	        // Create the input & output streams to the server
     	        ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
     	        ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
 
-    	        // Read modify
-    	        // TODO here
-
-    	        /* Create The Message Object to send */
-    	        LinkedList<Message> msgList = new LinkedList<>();
-    	        Message msg = new Message();
-    	        msg.setMessage("Kasun");
-    	        msg.setIndex(1);
-    	        msg.setAverage(5.5f);
-    	        msgList.push(msg);
-
-    	        /* Send the Message Object to the server */
-    	        outToServer.writeObject(msgList);            
-
-    	        /* Retrive the Message Object from server */
-    	        LinkedList<Message> inFromServerList = new LinkedList<>();
-    	        Message msgFrmServer = null;
-    	        inFromServerList = (LinkedList<Message>)inFromServer.readObject();
-    	        msgFrmServer = inFromServerList.pop();
+    	        City city = new City(-15, 37);
+    	        City city2 = new City(144, 240);
+    	        City city3 = new City(-80, 173);
+    	        City city4 = new City(33, 11);
+    	        City city5 = new City(4, -94);;
+    	        City city6 = new City(16, 18);
+    	        City city7 = new City(155, 33);
+    	        City city8 = new City(301, 140);
+    	        City city9 = new City(40, -120);
+    	        City city10 = new City(55, 144);
+    	        City city11 = new City(3, 17);
+    	        City city12 = new City(-60, -80);
+    	        City city13 = new City(-112, 80);
+    	        City city14 = new City(33, 233);
+    	        City city15 = new City(77, -40);
+    	        City city16 = new City(15, 12);
+    	        City city17 = new City(202, -66);
+    	        City city18 = new City(25, -41);
+    	        City city19 = new City(121, 20);
+    	        City city20 = new City(97, 114);
+    	        City city21 = new City(160, -20);
+    	        City city22 = new City(193, 45);
+    	        City city23 = new City(97, 97);
+    	        City city24 = new City(-12, 20);
+    	        City city25 = new City(115, 66);
+    	        City city26 = new City(43, -53);
+    	        City city27 = new City(8, 29);
+    	        City city28 = new City(164, -183);
+    	        City city29 = new City(72, 12);
+    	        City city30 = new City(200, -39);
+    	        
+    	        outToServer.writeObject(city);
+    	        outToServer.writeObject(city2);
+    	        outToServer.writeObject(city3);
+    	        outToServer.writeObject(city4);
+    	        outToServer.writeObject(city5);
+    	        outToServer.writeObject(city6);
+    	        outToServer.writeObject(city7);
+    	        outToServer.writeObject(city8);
+    	        outToServer.writeObject(city9);
+    	        outToServer.writeObject(city10);
+    	        outToServer.writeObject(city11);
+    	        outToServer.writeObject(city12);
+    	        outToServer.writeObject(city13);
+    	        outToServer.writeObject(city14);
+    	        outToServer.writeObject(city15);
+    	        outToServer.writeObject(city16);
+    	        outToServer.writeObject(city17);
+    	        outToServer.writeObject(city18);
+    	        outToServer.writeObject(city19);
+    	        outToServer.writeObject(city20);
+    	        outToServer.writeObject(city21);
+    	        outToServer.writeObject(city22);
+    	        outToServer.writeObject(city23);
+    	        outToServer.writeObject(city24);
+    	        outToServer.writeObject(city25);
+    	        outToServer.writeObject(city26);
+    	        outToServer.writeObject(city27);
+    	        outToServer.writeObject(city28);
+    	        outToServer.writeObject(city29);
+    	        outToServer.writeObject(city30);
+    	        
 
     	        /* Print out the recived Message */
-    	        System.out.println("Message: " + msgFrmServer.getMessage());
-    	        System.out.println("Index: " + msgFrmServer.getIndex());
-    	        System.out.println("Average: " + msgFrmServer.getAverage());
+    	        System.out.println("Message: " );
+    	        System.out.println("Index: " );
+    	        System.out.println("Average: ");
 
 
     	        clientSocket.close();
@@ -90,7 +137,7 @@ public class TSP {
     	    }
     	}
 
-    	final long startTime = System.nanoTime();
+    	/*final long startTime = System.nanoTime();
         // Create and add our cities
         City city = new City(-15, 37);
         TourManager.addCity(city);
@@ -168,6 +215,6 @@ public class TSP {
         System.out.println("Finished in " + duration*0.000000001 + " second(s).");
         System.out.println("Final distance: " + pop.getFittest().getDistance());
         System.out.println("Solution:");
-        System.out.println(pop.getFittest());
+        System.out.println(pop.getFittest());*/
     }
 }
