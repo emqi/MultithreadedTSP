@@ -12,6 +12,7 @@ public class TSP implements Serializable{
 
     public static void main(String[] args){
     	int port = 3333;
+    	String ip = "192.168.0.59";
     	System.out.println("What's your role?");
     	System.out.println("Choose 1 to become a server: ");
     	System.out.println("Choose 2 to become a client: ");
@@ -55,7 +56,7 @@ public class TSP implements Serializable{
     		System.out.println("You've become a client");
     		try {
     	        // Create the socket
-    	        Socket clientSocket = new Socket("192.168.0.59", port);
+    	        Socket clientSocket = new Socket(ip, port);
     	        // Create the input & output streams to the server
     	        ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
     	        ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
