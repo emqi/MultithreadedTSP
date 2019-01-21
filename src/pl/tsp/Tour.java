@@ -5,8 +5,9 @@ package pl.tsp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
+import java.io.Serializable;
 
-public class Tour{
+public class Tour implements Serializable{
 
 	ReentrantLock blokada = new ReentrantLock();
     // Holds our tour of cities

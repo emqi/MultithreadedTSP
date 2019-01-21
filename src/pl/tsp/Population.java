@@ -3,8 +3,9 @@
 package pl.tsp;
 
 import java.util.concurrent.*;
+import java.io.Serializable;
 
-public class Population {
+public class Population implements Serializable {
 
     // Holds population of tours
     Tour[] tours;
@@ -36,7 +37,7 @@ public class Population {
     public Tour getFittest() {
         Tour fittest = tours[0];
         Future<Tour> future;
-        ExecutorService executor = Executors.newFixedThreadPool(100);
+        ExecutorService executor = Executors.newFixedThreadPool(1);
         future = executor.submit(new Fittest(fittest, tours));
         try {
         	fittest = future.get();
