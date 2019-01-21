@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class TourManager {
 
     // Holds our cities
-    private static ArrayList destinationCities = new ArrayList<City>();
+    public static ArrayList destinationCities = new ArrayList<City>();
 
     // Adds a destination city
     public static void addCity(City city) {
