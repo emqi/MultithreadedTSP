@@ -9,15 +9,86 @@ import java.io.*;
 public class TSP {
 
     public static void main(String[] args){
+    	InetAddress addr = InetAddress.getByName("192.168.0.59");
+    	int port = 3333;
     	System.out.println("What's your role?");
     	System.out.println("Choose 1 to become a server: ");
     	System.out.println("Choose 2 to become a client: ");
     	Scanner scanner = new Scanner(System.in);
     	int choice = scanner.nextInt();
-    	if(choice == 1)
+    	if(choice == 1) {
     		System.out.println("You've become a server");
-    	else if(choice == 2)
+    		try {
+    	        ServerSocket welcomeSocket = new ServerSocket(port);
+    	        boolean condition = true;
+    	        while (condition == true) {    
+    	            // Create the Client Socket
+    	            Socket clientSocket = welcomeSocket.accept();
+    	            System.out.println("Socket Established...");
+    	            // Create input and output streams to client
+    	            ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+    	            ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+
+    	            // Read modify
+    	            // TODO here
+
+    	            /* Create Message object and retrive information */
+    	            while(TourManager.numberOfCities() <= 30) { 
+    	            	
+    	            }
+    	            condition = false;
+    	        }
+
+    	    } catch (Exception e) {
+    	        System.err.println("Server Error: " + e.getMessage());
+    	        System.err.println("Localized: " + e.getLocalizedMessage());
+    	        System.err.println("Stack Trace: " + e.getStackTrace());
+    	        System.err.println("To String: " + e.toString());
+    	    }
+    	}
+    	else if(choice == 2) {
     		System.out.println("You've become a client");
+    		try {
+    	        // Create the socket
+    	        Socket clientSocket = new Socket(addr, port);
+    	        // Create the input & output streams to the server
+    	        ObjectOutputStream outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+    	        ObjectInputStream inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+
+    	        // Read modify
+    	        // TODO here
+
+    	        /* Create The Message Object to send */
+    	        LinkedList<Message> msgList = new LinkedList<>();
+    	        Message msg = new Message();
+    	        msg.setMessage("Kasun");
+    	        msg.setIndex(1);
+    	        msg.setAverage(5.5f);
+    	        msgList.push(msg);
+
+    	        /* Send the Message Object to the server */
+    	        outToServer.writeObject(msgList);            
+
+    	        /* Retrive the Message Object from server */
+    	        LinkedList<Message> inFromServerList = new LinkedList<>();
+    	        Message msgFrmServer = null;
+    	        inFromServerList = (LinkedList<Message>)inFromServer.readObject();
+    	        msgFrmServer = inFromServerList.pop();
+
+    	        /* Print out the recived Message */
+    	        System.out.println("Message: " + msgFrmServer.getMessage());
+    	        System.out.println("Index: " + msgFrmServer.getIndex());
+    	        System.out.println("Average: " + msgFrmServer.getAverage());
+
+
+    	        clientSocket.close();
+
+    	    } catch (Exception e) {
+    	        System.err.println("Client Error: " + e.getMessage());
+    	        System.err.println("Localized: " + e.getLocalizedMessage());
+    	        System.err.println("Stack Trace: " + e.getStackTrace());
+    	    }
+    	}
 
     	final long startTime = System.nanoTime();
         // Create and add our cities
