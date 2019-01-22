@@ -12,7 +12,7 @@ public class TSP implements Serializable{
 
     public static void main(String[] args){
     	int port = 3333;
-    	String ip = "192.168.0.59";
+    	String ip = "192.168.43.105";
     	System.out.println("What's your role?");
     	System.out.println("Choose 1 to become a server: ");
     	System.out.println("Choose 2 to become a client: ");
@@ -32,6 +32,7 @@ public class TSP implements Serializable{
     	            ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
 
     	            TourManager.destinationCities = (ArrayList)inFromClient.readObject();
+    	            final long startTime = System.nanoTime();
     	            
     	            // Initialize population
     	            Population pop = new Population(50, true);
@@ -43,7 +44,12 @@ public class TSP implements Serializable{
     	                pop = GA.evolvePopulation(pop);
     	            }
     	            
+    	            final long duration = System.nanoTime() - startTime;
+    	            System.out.println("Finished in " + duration*0.000000001 + " second(s).");
+    	            System.out.println("Sending results to client...");
     	            outToClient.writeObject(pop);
+    	            outToClient.writeObject(duration);
+    	            System.out.println("Done!");
     	         }
     	    } catch (Exception e) {
     	        System.err.println("Server Error: " + e.getMessage());
@@ -125,8 +131,10 @@ public class TSP implements Serializable{
     	        outToServer.writeObject(TourManager.destinationCities);
     	        
     	        Population pop = (Population)inFromServer.readObject();
+    	        Long duration = (Long)inFromServer.readObject();
     	        
     	        // Print final results
+    	        System.out.println("Finished in " + duration*0.000000001 + " second(s).");
     	        System.out.println("Final distance: " + pop.getFittest().getDistance());
     	        System.out.println("Solution:");
     	        System.out.println(pop.getFittest());
